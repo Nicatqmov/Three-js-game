@@ -85,7 +85,6 @@ function updateCameraPosition() {
 
 //player
 
-
 const Ploader = new FBXLoader();
 let mixer;
 let playerObject; // Define playerObject in a scope accessible to both functions
@@ -102,6 +101,7 @@ Ploader.load('./assets/player/Astronauta.fbx', function (object) {
         });
     });
 
+    const currentPosition = object.position.clone();
     object.position.y = 0;
     object.rotation.y = Math.PI;
     action = mixer.clipAction(playerObject.animations[14]);
@@ -112,6 +112,22 @@ Ploader.load('./assets/player/Astronauta.fbx', function (object) {
     action.play();
     scene.add(playerObject);
 });
+
+
+let previousPlayerPosition = new THREE.Vector3();
+
+function isObjectMoving(object) {
+    // Get the current position of the object
+    const currentPosition = object.position.clone();
+
+    // Compare the current position with the previous position
+    const isMoving = !currentPosition.equals(previousPlayerPosition);
+
+    // Update the previous position for the next check
+    previousPlayerPosition.copy(currentPosition);
+
+    return isMoving;
+}
 
 const moveState = {
     forward: false,
@@ -124,30 +140,30 @@ const moveState = {
 document.addEventListener('keydown', (event) => {
     switch (event.code) {
         case 'KeyW': // Move forward (W)
-            action = mixer.clipAction(playerObject.animations[9]);
-            action.play();
+            // action = mixer.clipAction(playerObject.animations[9]);
+            // action.play();
             moveState.forward = true;
             break;
         case 'KeyS': // Move backward (S)
             moveState.backward = true;
-            action = mixer.clipAction(playerObject.animations[9]);
-            action.play();
+            // action = mixer.clipAction(playerObject.animations[9]);
+            // action.play();
             break;
         case 'KeyA': // Move left (A)
             moveState.left = true;
-            action = mixer.clipAction(playerObject.animations[9]);
-            action.play();
+            // action = mixer.clipAction(playerObject.animations[9]);
+            // action.play();
             break;
         case 'KeyD': // Move right (D)
             moveState.right = true;
-            action = mixer.clipAction(playerObject.animations[9]);
-            action.play();
+            // action = mixer.clipAction(playerObject.animations[9]);
+            // action.play();
             break;
         case 'ShiftLeft': // Move right (D)
             console.log("shift")
             moveState.run = true;
-            action = mixer.clipAction(playerObject.animations[12]);
-            action.play();
+            // action = mixer.clipAction(playerObject.animations[12]);
+            // action.play();
             break;
     }
 });
@@ -155,32 +171,32 @@ document.addEventListener('keyup', (event) => {
     switch (event.code) {
         case 'KeyW':
             moveState.forward = false;
-            action.stop(); // Stop the current animation
-            action = mixer.clipAction(playerObject.animations[14]);
-            action.play();
+            // action.stop(); // Stop the current animation
+            // action = mixer.clipAction(playerObject.animations[14]);
+            // action.play();
             break;
         case 'KeyS':
             moveState.backward = false;
-            action.stop(); // Stop the current animation
-            action = mixer.clipAction(playerObject.animations[14]);
-            action.play();
+            // action.stop(); // Stop the current animation
+            // action = mixer.clipAction(playerObject.animations[14]);
+            // action.play();
             break;
         case 'KeyA':
             moveState.left = false;
-            action.stop(); // Stop the current animation
-            action = mixer.clipAction(playerObject.animations[14]);
-            action.play();
+            // action.stop(); // Stop the current animation
+            // action = mixer.clipAction(playerObject.animations[14]);
+            // action.play();
             break;
         case 'KeyD':
             moveState.right = false;
-            action.stop(); // Stop the current animation
-            action = mixer.clipAction(playerObject.animations[14]);
-            action.play();
+            // action.stop(); // Stop the current animation
+            // action = mixer.clipAction(playerObject.animations[14]);
+            // action.play();
             break;
         case 'ShiftLeft': // Move right (D)
             // console.log("shift")
             moveState.run = false;
-           
+            action.stop(); // Stop the current animation
             break;
     }
 });
@@ -243,6 +259,21 @@ function animate() {
     updateCameraPosition();
     updatePlayerPosition();
     requestAnimationFrame(animate);
+    if (isObjectMoving(playerObject)) {
+        if( moveState.run ){
+            action = mixer.clipAction(playerObject.animations[12]);
+            action.play();
+        }
+        action = mixer.clipAction(playerObject.animations[9]);
+        action.play();
+        console.log("The object is moving.");
+    } else {
+        action.stop(); // Stop the current animation
+        action = mixer.clipAction(playerObject.animations[14]);
+        action.play();
+        console.log("The object is not moving.");
+    }
+    
     if (mixer) {
         mixer.update(deltaTime); // Update the animation mixer with the time delta
     }
