@@ -1,0 +1,11 @@
+Model Information:
+* title:	Wall low poly
+* source:	https://sketchfab.com/3d-models/wall-low-poly-98ff2cd52fee41e09ca846e5bbd0521d
+* author:	adventurer (https://sketchfab.com/ahmagh2e)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Wall low poly" (https://sketchfab.com/3d-models/wall-low-poly-98ff2cd52fee41e09ca846e5bbd0521d) by adventurer (https://sketchfab.com/ahmagh2e) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
